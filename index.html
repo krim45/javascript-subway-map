@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>지하철 노선도 관리</title>
-    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./index.css">\
   </head>
   <body>
     <div id="app">
@@ -14,7 +14,7 @@
       <input id="map-print-manager-button" type="button" value="4. 지하철 노선도 출력">
       
       <br/><br/>
-      <div class="station-manager">
+      <div id="station-manager">
         <div>역 이름</div>
         <input id="station-name-input" placeholder="역 이름을 입력해주세요." type="text">
         <input id="station-add-button" type="button" value="역 추가">
@@ -27,15 +27,12 @@
               <th>설정</th>
             </tr>
           </thead>
-          <tbody>
-            <tr class="station-add-list">
-              <td>인천</td>
-              <td><input type="button" value="삭제"></td>
-            </tr>
+          <tbody id="station-add-list">
           </tbody>
         </table>
       </div>
     </div>
     <script type="module" src="src/index.js"></script>
+    <script type="module" src="src/StationManager.js"></script>
   </body>
 </html>
