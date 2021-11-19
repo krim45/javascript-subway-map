@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <title>지하철 노선도 관리</title>
-    <link rel="stylesheet" href="./index.css">\
+    <link rel="stylesheet" href="./index.css">
+    <script defer type="module" src="src/index.js"></script>
+    <script defer type="module" src="src/StationManager.js"></script>
   </head>
   <body>
     <div id="app">
@@ -18,7 +20,7 @@
         <div>역 이름</div>
         <input id="station-name-input" placeholder="역 이름을 입력해주세요." type="text">
         <input id="station-add-button" type="button" value="역 추가">
-
+        
         <h2>🚉지하철 역 목록</h2>
         <table>
           <thead>
@@ -32,7 +34,6 @@
         </table>
       </div>
     </div>
-    <script type="module" src="src/index.js"></script>
-    <script type="module" src="src/StationManager.js"></script>
+
   </body>
 </html>
