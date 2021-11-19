@@ -6,16 +6,18 @@ class StationManager {
     this.stationNameInput = document.querySelector('#station-name-input');
   }
 
-  isValid(str) {
+  isValid(name) {
     let isContain = false;
     this.station.forEach(item => {
-      if (item.name === str) isContain = true;
+      if (item.name === name) isContain = true;
     })
-    return str.length > 1 && !isContain
+    return name.length > 1 && !isContain
   }
 
   giveWarning() {
-    alert('이미 존재하는 역 입니다.')
+    alert(`역 이름 조건을 만족하지 않거나 이미 존재하는 역입니다.
+    - 역 이름은 두 글자 이상이어야 합니다.
+    `)
     this.clearAll();
   }
 
@@ -24,16 +26,23 @@ class StationManager {
     const tdName = document.createElement('td');
     const tdWrap = document.createElement('td');
     const tdDelBtn = document.createElement('input');
-    tdName.textContent = this.stationNameInput.value;
 
-    tdDelBtn.setAttribute('class', 'delete-list');
-    tdDelBtn.setAttribute('type', 'button');
-    tdDelBtn.setAttribute('value', '삭제');
+    this.setTableAttribute(tr, tdName, tdDelBtn);
     tdWrap.append(tdDelBtn);
     tr.append(tdName, tdWrap);
     this.stationList.append(tr);
 
-    tdDelBtn.addEventListener('click', this.deleteList.bind(this));
+    tdDelBtn.addEventListener('click', () => {
+      this.deleteList(this.newListId);
+    });
+  }
+
+  setTableAttribute(tr, name, btn) {
+    tr.setAttribute('id', this.newListId);
+    btn.setAttribute('class', 'delete-list');
+    btn.setAttribute('type', 'button');
+    btn.setAttribute('value', '삭제');
+    name.textContent = this.stationNameInput.value;
   }
 
   addStation() {
@@ -41,24 +50,28 @@ class StationManager {
       this.makeTable();
       this.station.push({
         id: this.newListId++,
-        name: this.stationNameInput,
+        name: this.stationNameInput.value,
       })
-      this.clearAll();
     } else {
       this.giveWarning();
     }
+    this.clearAll();
   }
 
   clearAll() {
     this.stationNameInput.value = '';
   }
 
-  deleteList() {
+  deleteList(id) {
 
   }
 }
 
 const stationManager = new StationManager();
-const addBtn = document.querySelector('#station-add-button');
+const addBtn = document.querySelector('#station-add-form');
+
 // addBtn.addEventListener('click', stationManager.addStation);
-addBtn.addEventListener('click', stationManager.addStation.bind(stationManager));
+addBtn.addEventListener('submit', (e) => {
+  stationManager.addStation();
+  e.preventDefault();
+});
