@@ -10,14 +10,13 @@ class StationManager {
     let isContain = false;
     this.station.forEach(item => {
       if (item.name === name) isContain = true;
-    })
+    });
     return name.length > 1 && !isContain
   }
 
   giveWarning() {
     alert(`역 이름 조건을 만족하지 않거나 이미 존재하는 역입니다.
-    - 역 이름은 두 글자 이상이어야 합니다.
-    `)
+    - 역 이름은 두 글자 이상이어야 합니다.`)
     this.clearAll();
   }
 
@@ -70,7 +69,6 @@ class StationManager {
 const stationManager = new StationManager();
 const addBtn = document.querySelector('#station-add-form');
 
-// addBtn.addEventListener('click', stationManager.addStation);
 addBtn.addEventListener('submit', (e) => {
   stationManager.addStation();
   e.preventDefault();
