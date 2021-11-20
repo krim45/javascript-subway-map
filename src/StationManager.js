@@ -1,7 +1,7 @@
 class StationManager {
   constructor() {
     this.station = [];
-    this.newListId = 1;
+    this.newStationId = 1;
     this.stationList = document.querySelector('#station-add-list');
     this.stationNameInput = document.querySelector('#station-name-input');
   }
@@ -25,6 +25,7 @@ class StationManager {
     const tdName = document.createElement('td');
     const tdWrap = document.createElement('td');
     const tdDelBtn = document.createElement('input');
+    const id = this.newStationId;
 
     this.setTableAttribute(tr, tdName, tdDelBtn);
     tdWrap.append(tdDelBtn);
@@ -32,12 +33,12 @@ class StationManager {
     this.stationList.append(tr);
 
     tdDelBtn.addEventListener('click', () => {
-      this.deleteList(this.newListId);
+      this.deleteStation(id);
     });
   }
 
   setTableAttribute(tr, name, btn) {
-    tr.setAttribute('id', this.newListId);
+    tr.setAttribute('id', `station${this.newStationId}`);
     btn.setAttribute('class', 'delete-list');
     btn.setAttribute('type', 'button');
     btn.setAttribute('value', '삭제');
@@ -48,7 +49,7 @@ class StationManager {
     if (this.isValid(this.stationNameInput.value)) {
       this.makeTable();
       this.station.push({
-        id: this.newListId++,
+        id: this.newStationId++,
         name: this.stationNameInput.value,
       })
     } else {
@@ -61,8 +62,13 @@ class StationManager {
     this.stationNameInput.value = '';
   }
 
-  deleteList(id) {
-
+  deleteStation(id) {
+    const deleteList = document.querySelector(`#station${id}`);
+    const result = confirm(deleteList.firstChild.textContent + ' 역을 삭제 하시겠습니까?')
+    if (result) {
+      this.station = this.station.filter(item => item.id !== id);
+      deleteList.remove();
+    }
   }
 }
 
