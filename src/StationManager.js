@@ -1,38 +1,35 @@
-export class StationManager {
-  constructor() {
-    this.station = JSON.parse(localStorage.getItem('station')) || [];
-    this.newStationId = JSON.parse(localStorage.getItem('stationId')) || 1;
-    this.stationList = document.querySelector('#station-add-list');
-    this.stationNameInput = document.querySelector('#station-name-input');
-  }
+import { getLocalData, setLocalData } from './localStorage.js'
+import { STATION_KEY, STATION_ID } from './const.js'
+import { View } from './View.js'
 
-  render() {
-    this.makeTable(this.station);
+export class StationManager extends View {
+  constructor() {
+    super()
+    this.station = getLocalData(STATION_KEY) || [];
+    this.newStationId = getLocalData(STATION_ID) || 1;
   }
 
   makeTable(list) {
     this.clearTable();
     for (let item of list) {
-      const tr = document.createElement('tr');
-      const tdName = document.createElement('td');
-      const tdWrap = document.createElement('td');
-      const tdDelBtn = document.createElement('input');
+      const stationNameWrap = document.createElement('tr');
+      const stationName = document.createElement('td');
+      const delBtnWrap = document.createElement('td');
+      const delBtn = document.createElement('input');
 
-      this.setTableAttribute(tr, tdName, tdDelBtn, item.id, item.name);
-      tdWrap.append(tdDelBtn);
-      tr.append(tdName, tdWrap);
-      this.stationList.append(tr);
-
-      tdDelBtn.addEventListener('click', () => { this.deleteStation(item.id) });
+      this.setTableAttribute(stationNameWrap, stationName, delBtn, item.id, item.name);
+      delBtnWrap.append(delBtn);
+      stationNameWrap.append(stationName, delBtnWrap);
+      this.stationList.append(stationNameWrap);
     }
   }
 
-  setTableAttribute(tr, tdName, btn, id, name) {
-    tr.setAttribute('id', `station${id}`);
-    btn.setAttribute('class', 'delete-list');
+  setTableAttribute(nameWrap, nameEl, btn, id, name) {
+    nameWrap.setAttribute('id', `station${id}`);
+    btn.setAttribute('id', `delete-list-${id}`);
     btn.setAttribute('type', 'button');
     btn.setAttribute('value', '삭제');
-    tdName.textContent = name;
+    nameEl.textContent = name;
   }
 
   isValid(name) {
@@ -48,10 +45,10 @@ export class StationManager {
         id: this.newStationId++,
         name: this.stationNameInput.value,
       })
-      localStorage.setItem('stationId', JSON.stringify(this.newStationId));
-      localStorage.setItem('station', JSON.stringify(this.station));
+      setLocalData(STATION_KEY, this.station);
+      setLocalData(STATION_ID, this.newStationId);
     } else {
-      this.giveWarning();
+      this.haveDuplicatedName();
     }
     this.clearInput();
   }
@@ -62,28 +59,8 @@ export class StationManager {
 
     if (result) {
       this.station = this.station.filter(item => item.id !== id);
-      localStorage.setItem('station', JSON.stringify(this.station));
+      setLocalData(STATION_KEY, this.station);
       deleteList.remove();
     }
-  }
-
-  giveWarning() {
-    alert(`역 이름 조건을 만족하지 않거나 이미 존재하는 역입니다.
-    - 역 이름은 두 글자 이상이어야 합니다.`)
-    this.clearInput();
-  }
-
-  clearInput() {
-    this.stationNameInput.value = '';
-  }
-
-  clearTable() {
-    while (this.stationList.hasChildNodes()) {
-      this.stationList.firstChild.remove();
-    }
-  }
-
-  setEventListener() {
-
   }
 }
