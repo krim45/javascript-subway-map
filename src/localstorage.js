@@ -1,7 +1,7 @@
+export const getLocalData = (key) => {
+  return JSON.parse(localStorage.getItem(key));
+}
 
-
-// localStorage.setItem('line', null);
-
-// localStorage.setItem('section', null);
-
-// localStorage.setItem('map', null);
+export const setLocalData = (key, value) => {
+  localStorage.setItem(key, JSON.stringify(value));
+}
